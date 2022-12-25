@@ -3,6 +3,7 @@ from config import creds
 from psycopg2 import connect
 from sqlalchemy import create_engine
 import pandas as pd
+from loguru import logger
 
 
 class InitDB:
@@ -14,8 +15,8 @@ class InitDB:
 
     def engine(self):
         return create_engine("postgresql+psycopg2://{user}:{pw}@{host}/{db}"
-                                    .format(host=self.host, db=self.database, user=self.user,
-                                            pw=self.password))
+                             .format(host=self.host, db=self.database, user=self.user,
+                                     pw=self.password))
 
     def init_connector(self):
         connection = connect(
@@ -50,30 +51,36 @@ class QueriesDB(InitDB):
         df.to_sql(table, super().engine(), index=False, if_exists='append')
 
     def out_to_xml(self, query):
-        df = pd.DataFrame(self.req_query_out(query), columns=[f'column_{i + 1}' for i in range(len(self.req_query_out(query)[0]))])
+        df = pd.DataFrame(self.req_query_out(query),
+                          columns=[f'column_{i + 1}' for i in range(len(self.req_query_out(query)[0]))])
         df.to_xml('data/out/xml_out.xml')
 
     def out_to_json(self, query):
-        df = pd.DataFrame(self.req_query_out(query), columns=[f'column_{i + 1}' for i in range(len(self.req_query_out(query)[0]))])
+        df = pd.DataFrame(self.req_query_out(query),
+                          columns=[f'column_{i + 1}' for i in range(len(self.req_query_out(query)[0]))])
         df.to_json('data/out/json_out.json')
 
 
 if __name__ == "__main__":
-    # init = InitDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
-    queries = QueriesDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
-    queries.create_schema(schema)
+    @logger.catch
+    def main():
+        # log shows only that db already filled and data already exists
+        logger.add("debug.log", format="{time} {level} {message}", level="DEBUG", rotation="10 MB", compression="zip")
+        # init = InitDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
+        queries = QueriesDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
+        queries.create_schema(schema)
 
-    # filling tables
-    queries.json_to_sql('rooms', '/home/mikra/MikraPythonProjects/python_task_1/data/in/rooms.json')
-    queries.json_to_sql('students', '/home/mikra/MikraPythonProjects/python_task_1/data/in/students.json')
+        # filling tables
+        queries.json_to_sql('rooms', '/home/mikra/MikraPythonProjects/python_task_1/data/in/rooms.json')
+        queries.json_to_sql('students', '/home/mikra/MikraPythonProjects/python_task_1/data/in/students.json')
 
-    # print result of SQL request query from DB
-    print(queries.req_query_out(query_1))
-    print(queries.req_query_out(query_2))
-    print(queries.req_query_out(query_3))
-    print(queries.req_query_out(query_4))
+        # print result of SQL request query from DB
+        print(queries.req_query_out(query_1))
+        print(queries.req_query_out(query_2))
+        print(queries.req_query_out(query_3))
+        print(queries.req_query_out(query_4))
 
-    # puts data of SQL query you ask to xml / JSON from DB
-    queries.out_to_xml(query_3)
-    queries.out_to_json(query_3)
-
+        # puts data of SQL query you ask to xml / JSON from DB
+        queries.out_to_xml(query_3)
+        queries.out_to_json(query_3)
+    main()

@@ -5,7 +5,6 @@ import pytest
 
 
 # WARNING::: NEED TO RUN TESTS ONLY AFTER COMPLETING PUT DATA TO DATABASE
-
 def test_atomicity_frm_files_to_db():
     file_1, file_2 = open('/home/mikra/MikraPythonProjects/python_task_1/data/in/rooms.json'), \
         open('/home/mikra/MikraPythonProjects/python_task_1/data/in/students.json')
