@@ -1,0 +1,266 @@
+2022-12-25T21:29:59.542074+0300 ERROR An error has been caught in function '<module>', process 'MainProcess' (26463), thread 'MainThread' (140397348651456):
+Traceback (most recent call last):
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1880, in _execute_context
+    self.dialect.do_executemany(
+    │    │       └ <function PGDialect_psycopg2.do_executemany at 0x7fb0b2f65510>
+    │    └ <sqlalchemy.dialects.postgresql.psycopg2.PGDialect_psycopg2 object at 0x7fb0b3063fa0>
+    └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+    │       │                        │     └ <function execute_values at 0x7fb0b2f9dd80>
+    │       │                        └ <module 'psycopg2.extras' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py'>
+    │       └ None
+    └ <sqlalchemy.dialects.postgresql.psycopg2.PGExecutionContext_psycopg2 object at 0x7fb0b2fa4700>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+    │   │                └ [b'INSERT INTO rooms (id, name) VALUES ', b"(0, 'Room #0')", b',', b"(1, 'Room #1')", b',', b"(2, 'Room #2')", b',', b"(3, 'R...
+    │   └ <method 'execute' of 'psycopg2.extensions.cursor' objects>
+    └ <cursor object at 0x7fb0b307cb80; closed: -1>
+
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "rooms_pkey"
+DETAIL:  Key (id)=(0) already exists.
+
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+> File "/home/mikra/MikraPythonProjects/python_task_1/main.py", line 85, in <module>
+    main()
+    └ <function main at 0x7fb0b3086b00>
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/main.py", line 73, in main
+    queries.json_to_sql('rooms', '/home/mikra/MikraPythonProjects/python_task_1/data/in/rooms.json')
+    │       └ <function QueriesDB.json_to_sql at 0x7fb0b3086950>
+    └ <__main__.QueriesDB object at 0x7fb0b3063a30>
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/main.py", line 51, in json_to_sql
+    df.to_sql(table, super().engine(), index=False, if_exists='append')
+    │  │      └ 'rooms'
+    │  └ <function NDFrame.to_sql at 0x7fb0b38601f0>
+    └       id       name
+      0      0    Room #0
+      1      1    Room #1
+      2      2    Room #2
+      3      3    Room #3
+      4      4    Room #4
+      ..   ...
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/core/generic.py", line 2987, in to_sql
+    return sql.to_sql(
+           │   └ <function to_sql at 0x7fb0b31c4c10>
+           └ <module 'pandas.io.sql' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py'>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 695, in to_sql
+    return pandas_sql.to_sql(
+           │          └ <function SQLDatabase.to_sql at 0x7fb0b31c6050>
+           └ <pandas.io.sql.SQLDatabase object at 0x7fb0b3063cd0>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 1738, in to_sql
+    total_inserted = sql_engine.insert_records(
+                     │          └ <function SQLAlchemyEngine.insert_records at 0x7fb0b31c5a20>
+                     └ <pandas.io.sql.SQLAlchemyEngine object at 0x7fb0b2f79b40>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 1335, in insert_records
+    raise err
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 1325, in insert_records
+    return table.insert(chunksize=chunksize, method=method)
+           │     │                │                 └ None
+           │     │                └ None
+           │     └ <function SQLTable.insert at 0x7fb0b31c52d0>
+           └ <pandas.io.sql.SQLTable object at 0x7fb0b2f7a5f0>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 946, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+                   │           │     │     └ <zip object at 0x7fb0cbf55400>
+                   │           │     └ ['id', 'name']
+                   │           └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+                   └ <bound method SQLTable._execute_insert of <pandas.io.sql.SQLTable object at 0x7fb0b2f7a5f0>>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 853, in _execute_insert
+    result = conn.execute(self.table.insert(), data)
+             │    │       │    │     │         └ [{'id': 0, 'name': 'Room #0'}, {'id': 1, 'name': 'Room #1'}, {'id': 2, 'name': 'Room #2'}, {'id': 3, 'name': 'Room #3'}, {'id...
+             │    │       │    │     └ <function TableClause.insert at 0x7fb0c9cf6290>
+             │    │       │    └ Table('rooms', MetaData(), Column('id', BigInteger(), table=<rooms>), Column('name', Text(), table=<rooms>), schema=None)
+             │    │       └ <pandas.io.sql.SQLTable object at 0x7fb0b2f7a5f0>
+             │    └ <function Connection.execute at 0x7fb0c9dbd7e0>
+             └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1380, in execute
+    return meth(self, multiparams, params, _EMPTY_EXECUTION_OPTS)
+           │    │     │            │       └ immutabledict({})
+           │    │     │            └ {}
+           │    │     └ ([{'id': 0, 'name': 'Room #0'}, {'id': 1, 'name': 'Room #1'}, {'id': 2, 'name': 'Room #2'}, {'id': 3, 'name': 'Room #3'}, {'i...
+           │    └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+           └ <bound method ClauseElement._execute_on_connection of <sqlalchemy.sql.dml.Insert object at 0x7fb0b2fa5210>>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
+    return connection._execute_clauseelement(
+           │          └ <function Connection._execute_clauseelement at 0x7fb0c9dbdab0>
+           └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+          │    └ <function Connection._execute_context at 0x7fb0c9dbdd80>
+          └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+    │    └ <function Connection._handle_dbapi_exception at 0x7fb0c9dbdf30>
+    └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+    │    └ <function raise_ at 0x7fb0cb326950>
+    └ <module 'sqlalchemy.util' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/util/__...
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/util/compat.py", line 210, in raise_
+    raise exception
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1880, in _execute_context
+    self.dialect.do_executemany(
+    │    │       └ <function PGDialect_psycopg2.do_executemany at 0x7fb0b2f65510>
+    │    └ <sqlalchemy.dialects.postgresql.psycopg2.PGDialect_psycopg2 object at 0x7fb0b3063fa0>
+    └ <sqlalchemy.engine.base.Connection object at 0x7fb0b2fa4040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+    │       │                        │     └ <function execute_values at 0x7fb0b2f9dd80>
+    │       │                        └ <module 'psycopg2.extras' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py'>
+    │       └ None
+    └ <sqlalchemy.dialects.postgresql.psycopg2.PGExecutionContext_psycopg2 object at 0x7fb0b2fa4700>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+    │   │                └ [b'INSERT INTO rooms (id, name) VALUES ', b"(0, 'Room #0')", b',', b"(1, 'Room #1')", b',', b"(2, 'Room #2')", b',', b"(3, 'R...
+    │   └ <method 'execute' of 'psycopg2.extensions.cursor' objects>
+    └ <cursor object at 0x7fb0b307cb80; closed: -1>
+
+sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "rooms_pkey"
+DETAIL:  Key (id)=(0) already exists.
+
+[SQL: INSERT INTO rooms (id, name) VALUES (%(id)s, %(name)s)]
+[parameters: ({'id': 0, 'name': 'Room #0'}, {'id': 1, 'name': 'Room #1'}, {'id': 2, 'name': 'Room #2'}, {'id': 3, 'name': 'Room #3'}, {'id': 4, 'name': 'Room #4'}, {'id': 5, 'name': 'Room #5'}, {'id': 6, 'name': 'Room #6'}, {'id': 7, 'name': 'Room #7'}  ... displaying 10 of 1000 total bound parameter sets ...  {'id': 998, 'name': 'Room #998'}, {'id': 999, 'name': 'Room #999'})]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+2022-12-25T21:47:16.875393+0300 ERROR An error has been caught in function '<module>', process 'MainProcess' (27917), thread 'MainThread' (140636985373120):
+Traceback (most recent call last):
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1880, in _execute_context
+    self.dialect.do_executemany(
+    │    │       └ <function PGDialect_psycopg2.do_executemany at 0x7fe87e6f9510>
+    │    └ <sqlalchemy.dialects.postgresql.psycopg2.PGDialect_psycopg2 object at 0x7fe87e7f7fa0>
+    └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+    │       │                        │     └ <function execute_values at 0x7fe87e731d80>
+    │       │                        └ <module 'psycopg2.extras' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py'>
+    │       └ None
+    └ <sqlalchemy.dialects.postgresql.psycopg2.PGExecutionContext_psycopg2 object at 0x7fe87e738700>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+    │   │                └ [b'INSERT INTO rooms (id, name) VALUES ', b"(0, 'Room #0')", b',', b"(1, 'Room #1')", b',', b"(2, 'Room #2')", b',', b"(3, 'R...
+    │   └ <method 'execute' of 'psycopg2.extensions.cursor' objects>
+    └ <cursor object at 0x7fe87e80cb80; closed: -1>
+
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "rooms_pkey"
+DETAIL:  Key (id)=(0) already exists.
+
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+> File "/home/mikra/MikraPythonProjects/python_task_1/main.py", line 86, in <module>
+    main()
+    └ <function main at 0x7fe87e81ab00>
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/main.py", line 74, in main
+    queries.json_to_sql('rooms', '/home/mikra/MikraPythonProjects/python_task_1/data/in/rooms.json')
+    │       └ <function QueriesDB.json_to_sql at 0x7fe87e81a950>
+    └ <__main__.QueriesDB object at 0x7fe87e7f7a30>
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/main.py", line 51, in json_to_sql
+    df.to_sql(table, super().engine(), index=False, if_exists='append')
+    │  │      └ 'rooms'
+    │  └ <function NDFrame.to_sql at 0x7fe87eff01f0>
+    └       id       name
+      0      0    Room #0
+      1      1    Room #1
+      2      2    Room #2
+      3      3    Room #3
+      4      4    Room #4
+      ..   ...
+
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/core/generic.py", line 2987, in to_sql
+    return sql.to_sql(
+           │   └ <function to_sql at 0x7fe87e958c10>
+           └ <module 'pandas.io.sql' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py'>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 695, in to_sql
+    return pandas_sql.to_sql(
+           │          └ <function SQLDatabase.to_sql at 0x7fe87e95a050>
+           └ <pandas.io.sql.SQLDatabase object at 0x7fe87e7f7cd0>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 1738, in to_sql
+    total_inserted = sql_engine.insert_records(
+                     │          └ <function SQLAlchemyEngine.insert_records at 0x7fe87e959a20>
+                     └ <pandas.io.sql.SQLAlchemyEngine object at 0x7fe87e70db40>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 1335, in insert_records
+    raise err
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 1325, in insert_records
+    return table.insert(chunksize=chunksize, method=method)
+           │     │                │                 └ None
+           │     │                └ None
+           │     └ <function SQLTable.insert at 0x7fe87e9592d0>
+           └ <pandas.io.sql.SQLTable object at 0x7fe87e70e5f0>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 946, in insert
+    num_inserted = exec_insert(conn, keys, chunk_iter)
+                   │           │     │     └ <zip object at 0x7fe87e88ccc0>
+                   │           │     └ ['id', 'name']
+                   │           └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+                   └ <bound method SQLTable._execute_insert of <pandas.io.sql.SQLTable object at 0x7fe87e70e5f0>>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/pandas/io/sql.py", line 853, in _execute_insert
+    result = conn.execute(self.table.insert(), data)
+             │    │       │    │     │         └ [{'id': 0, 'name': 'Room #0'}, {'id': 1, 'name': 'Room #1'}, {'id': 2, 'name': 'Room #2'}, {'id': 3, 'name': 'Room #3'}, {'id...
+             │    │       │    │     └ <function TableClause.insert at 0x7fe8954fa290>
+             │    │       │    └ Table('rooms', MetaData(), Column('id', BigInteger(), table=<rooms>), Column('name', Text(), table=<rooms>), schema=None)
+             │    │       └ <pandas.io.sql.SQLTable object at 0x7fe87e70e5f0>
+             │    └ <function Connection.execute at 0x7fe8955c17e0>
+             └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1380, in execute
+    return meth(self, multiparams, params, _EMPTY_EXECUTION_OPTS)
+           │    │     │            │       └ immutabledict({})
+           │    │     │            └ {}
+           │    │     └ ([{'id': 0, 'name': 'Room #0'}, {'id': 1, 'name': 'Room #1'}, {'id': 2, 'name': 'Room #2'}, {'id': 3, 'name': 'Room #3'}, {'i...
+           │    └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+           └ <bound method ClauseElement._execute_on_connection of <sqlalchemy.sql.dml.Insert object at 0x7fe87e739210>>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
+    return connection._execute_clauseelement(
+           │          └ <function Connection._execute_clauseelement at 0x7fe8955c1ab0>
+           └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1572, in _execute_clauseelement
+    ret = self._execute_context(
+          │    └ <function Connection._execute_context at 0x7fe8955c1d80>
+          └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1943, in _execute_context
+    self._handle_dbapi_exception(
+    │    └ <function Connection._handle_dbapi_exception at 0x7fe8955c1f30>
+    └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2124, in _handle_dbapi_exception
+    util.raise_(
+    │    └ <function raise_ at 0x7fe896b2a950>
+    └ <module 'sqlalchemy.util' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/util/__...
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/util/compat.py", line 210, in raise_
+    raise exception
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1880, in _execute_context
+    self.dialect.do_executemany(
+    │    │       └ <function PGDialect_psycopg2.do_executemany at 0x7fe87e6f9510>
+    │    └ <sqlalchemy.dialects.postgresql.psycopg2.PGDialect_psycopg2 object at 0x7fe87e7f7fa0>
+    └ <sqlalchemy.engine.base.Connection object at 0x7fe87e738040>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/sqlalchemy/dialects/postgresql/psycopg2.py", line 982, in do_executemany
+    context._psycopg2_fetched_rows = xtras.execute_values(
+    │       │                        │     └ <function execute_values at 0x7fe87e731d80>
+    │       │                        └ <module 'psycopg2.extras' from '/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py'>
+    │       └ None
+    └ <sqlalchemy.dialects.postgresql.psycopg2.PGExecutionContext_psycopg2 object at 0x7fe87e738700>
+  File "/home/mikra/MikraPythonProjects/python_task_1/lib/python3.10/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+    │   │                └ [b'INSERT INTO rooms (id, name) VALUES ', b"(0, 'Room #0')", b',', b"(1, 'Room #1')", b',', b"(2, 'Room #2')", b',', b"(3, 'R...
+    │   └ <method 'execute' of 'psycopg2.extensions.cursor' objects>
+    └ <cursor object at 0x7fe87e80cb80; closed: -1>
+
+sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "rooms_pkey"
+DETAIL:  Key (id)=(0) already exists.
+
+[SQL: INSERT INTO rooms (id, name) VALUES (%(id)s, %(name)s)]
+[parameters: ({'id': 0, 'name': 'Room #0'}, {'id': 1, 'name': 'Room #1'}, {'id': 2, 'name': 'Room #2'}, {'id': 3, 'name': 'Room #3'}, {'id': 4, 'name': 'Room #4'}, {'id': 5, 'name': 'Room #5'}, {'id': 6, 'name': 'Room #6'}, {'id': 7, 'name': 'Room #7'}  ... displaying 10 of 1000 total bound parameter sets ...  {'id': 998, 'name': 'Room #998'}, {'id': 999, 'name': 'Room #999'})]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
