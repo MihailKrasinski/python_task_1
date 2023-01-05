@@ -18,5 +18,7 @@ python-dotenv==0.21.0
 pytz==2022.6
 six==1.16.0
 SQLAlchemy==1.4.44
+sqlitis==0.0.5
+sqlparse==0.3.0
 tomli==2.0.1
 typing_extensions==4.4.0
