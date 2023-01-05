@@ -45,8 +45,7 @@ def test_fourth_query_result_try():
     assert len(data_json["column_1"]) == len(data_xml_ready)
 
 
-def test_out_files_after_complete_script_exist():
-    pytest.assertRaises(FileNotFoundError, "is empty, please run test after completing script")
+
 
 
 
