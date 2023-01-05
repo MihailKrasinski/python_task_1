@@ -22,6 +22,7 @@ class QueriesDB(InitDB):
                             REFERENCES rooms(id)
                 );
                 '''))
+        return "Schema created!"
 
     def json_to_sql(self, table, dir_json_file):
         df = pd.read_json(dir_json_file)

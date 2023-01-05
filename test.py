@@ -9,12 +9,16 @@ from xml.dom import minidom
 
 
 def test_connection_init_db_if_correct_dot_env_exists():
-    InitDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
+    init = InitDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
+    with init.init_connector().cursor() as cur:
+        cur.execute("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' "
+                    "AND schemaname != 'information_schema';")
+        assert cur.fetchall() is not None
 
 
-def test_creating_schema_method():
+def test_creating_schema():
     queries = QueriesDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
-    queries.create_schema()
+    assert queries.create_schema() == "Schema created!"
 
 
 def test_mini_atomicity_frm_files_to_db_and_first_query():
