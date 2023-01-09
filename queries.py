@@ -1,6 +1,7 @@
 from init import InitDB
 import pandas as pd
 from sqlalchemy import text
+import logging
 
 
 class QueriesDB(InitDB):
@@ -22,11 +23,13 @@ class QueriesDB(InitDB):
                             REFERENCES rooms(id)
                 );
                 '''))
+        logging.debug("Schema created!")
         return "Schema created!"
 
     def json_to_sql(self, table, dir_json_file):
         df = pd.read_json(dir_json_file)
         df.to_sql(table, super().engine(), index=False, if_exists='append')
+        logging.debug("Dataframe loaded to Database!")
 
     def queries_out(self):
         self.create_schema()
@@ -62,13 +65,17 @@ class QueriesDB(InitDB):
             df_1 = pd.DataFrame(result_1, columns=[f'column_{i}' for i in range(len(result_1[0]))])
             df_1.to_xml('data/out/query_1.xml')
             df_1.to_json('data/out/query_1.json')
+            logging.debug("First Query Ready!")
             df_2 = pd.DataFrame(result_2, columns=[f'column_{i}' for i in range(len(result_2[0]))])
             df_2.to_xml('data/out/query_2.xml')
             df_2.to_json('data/out/query_2.json')
+            logging.debug("Second Query Ready!")
             df_3 = pd.DataFrame(result_3, columns=[f'column_{i}' for i in range(len(result_3[0]))])
             df_3.to_xml('data/out/query_3.xml')
             df_3.to_json('data/out/query_3.json')
+            logging.debug("Third Query Ready!")
             df_4 = pd.DataFrame(result_4, columns=[f'column_{i}' for i in range(len(result_4[0]))])
             df_4.to_xml('data/out/query_4.xml')
             df_4.to_json('data/out/query_4.json')
+            logging.debug("Fourth Query Ready!")
 

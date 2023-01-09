@@ -1,5 +1,4 @@
 import psycopg2
-
 from main import *
 from init import InitDB
 from config import *
@@ -8,7 +7,7 @@ import pytest
 from xml.dom import minidom
 
 
-def test_connection_init_db_if_correct_dot_env_exists():
+def test_connection_init_db_if_correct_dot_env_config_values_exists_in_db():
     init = InitDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
     with init.init_connector().cursor() as cur:
         cur.execute("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' "

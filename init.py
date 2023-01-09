@@ -1,3 +1,4 @@
+import logging
 from psycopg2 import connect
 from sqlalchemy import create_engine
 
@@ -22,8 +23,10 @@ class InitDB:
             database=self.database
         )
         connection.autocommit = True
+        logging.debug("Session connection initialised!")
         return connection
 
     def disconnect(self):
         self.init_connector().cursor().close()
         self.init_connector().close()
+        logging.debug("Session connection disconnected!")
