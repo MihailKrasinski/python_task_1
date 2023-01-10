@@ -5,8 +5,19 @@ import logging
 
 
 class QueriesDB(InitDB):
-
+    """
+    The QueriesDB class to complete database queries, that contains various
+    methods to create database schema and attributes, class inherited from parent class of database connection InitDB.
+    It has few methods: create schema, json_to_sql, queries_out.
+    """
     def create_schema(self):
+        """
+        Creates database schema
+        Args:
+            text: SQL query wrapped in text method from SQL alchemy
+        Returns:
+            The method returns message: "Schema created!"
+        """
         super().engine().execute(text('''
                 create table if not exists rooms (
                     id int primary key,
@@ -27,11 +38,24 @@ class QueriesDB(InitDB):
         return "Schema created!"
 
     def json_to_sql(self, table, dir_json_file):
+        """
+        Writes DataFrame object into database
+        Args:
+            df: pandas DataFrame object
+        Returns:
+            Message Dataframe loaded to Database! if executed
+        """
         df = pd.read_json(dir_json_file)
         df.to_sql(table, super().engine(), index=False, if_exists='append')
         logging.debug("Dataframe loaded to Database!")
 
     def queries_out(self):
+        """
+        Get DataFrame object and data from the database using SQL query to folder (data / out) files .json or .xml
+
+        Returns:
+            2 Files: .json and .xml after every query if executed
+        """
         self.create_schema()
         self.json_to_sql('rooms', 'data/in/rooms.json')
         self.json_to_sql('students', 'data/in/students.json')
