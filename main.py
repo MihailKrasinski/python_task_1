@@ -1,7 +1,8 @@
-from config import creds
 from queries import QueriesDB
 from logger.logger import *
 # from loguru import logger
+from config import *
+
 
 if __name__ == "__main__":
     # @logger.catch
@@ -10,3 +11,4 @@ if __name__ == "__main__":
         queries = QueriesDB(creds['HOST'], creds['DBNAME'], creds['USER'], creds['PASSWORD'])
         queries.queries_out()
     main()
+
